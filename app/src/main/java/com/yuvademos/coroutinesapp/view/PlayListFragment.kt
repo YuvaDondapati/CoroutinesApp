@@ -10,29 +10,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yuvademos.coroutinesapp.R
-import com.yuvademos.coroutinesapp.network.PlayListApi
-import com.yuvademos.coroutinesapp.network.PlayListService
-import com.yuvademos.coroutinesapp.repository.PlayListRepository
 import com.yuvademos.coroutinesapp.viewmodel.PlayListViewModel
-import com.yuvademos.coroutinesapp.viewmodel.PlayListViewmodelFactory
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.yuvademos.coroutinesapp.viewmodel.PlayListViewModelFactory
+import org.koin.android.ext.android.inject
 
 class PlayListFragment : Fragment() {
 
     private lateinit var viewModel: PlayListViewModel
-    lateinit var viewModelFactory: PlayListViewmodelFactory
 
-    //    private val api = PlayListApi()
-    val retrofit = Retrofit.Builder().baseUrl("http://192.168.0.104:3000/")
-        .client(OkHttpClient())
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    val viewModelFactory: PlayListViewModelFactory by inject()
 
-    private val api = retrofit.create(PlayListApi::class.java)
-    private val apiService = PlayListService(api)
-    private val repository = PlayListRepository(apiService)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,7 +47,6 @@ class PlayListFragment : Fragment() {
     }
 
     private fun setUpViewModel() {
-        viewModelFactory = PlayListViewmodelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(PlayListViewModel::class.java)
     }
 
