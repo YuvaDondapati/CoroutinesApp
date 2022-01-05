@@ -15,13 +15,23 @@ import com.yuvademos.coroutinesapp.network.PlayListService
 import com.yuvademos.coroutinesapp.repository.PlayListRepository
 import com.yuvademos.coroutinesapp.viewmodel.PlayListViewModel
 import com.yuvademos.coroutinesapp.viewmodel.PlayListViewmodelFactory
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class PlayListFragment : Fragment() {
 
     private lateinit var viewModel: PlayListViewModel
     lateinit var viewModelFactory: PlayListViewmodelFactory
-//    private val api = PlayListApi()
-    private val apiService = PlayListService(object : PlayListApi{})
+
+    //    private val api = PlayListApi()
+    val retrofit = Retrofit.Builder().baseUrl("http://192.168.0.104:3000/")
+        .client(OkHttpClient())
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val api = retrofit.create(PlayListApi::class.java)
+    private val apiService = PlayListService(api)
     private val repository = PlayListRepository(apiService)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

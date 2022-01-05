@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.yuvademos.coroutinesapp.R
 import com.yuvademos.coroutinesapp.model.PlayList
 import com.yuvademos.coroutinesapp.databinding.PlaylistItemBinding
 
@@ -26,7 +27,7 @@ class MyPlayListRecyclerViewAdapter(
         val item = values[position]
         holder.playListName.text = item.name
         holder.category.text = item.category
-        holder.image.setImageResource(item.image)
+        holder.image.setImageResource(R.drawable.playlist)
     }
 
     override fun getItemCount(): Int = values.size

@@ -36,6 +36,7 @@ class PlayListFeature {
 
     @Test
     fun displayList(){
+        Thread.sleep(4000)
         onView(allOf(withId(R.id.playlist_name), isDescendantOfA(nthChildOf(withId(R.id.playLists_list), 0))))
             .check(matches(withText("Hard Rock Cafe")))
             .check(matches(isDisplayed()))
@@ -44,7 +45,7 @@ class PlayListFeature {
             .check(matches(withText("rock")))
             .check(matches(isDisplayed()))
 
-      /*  onView(allOf(withId(R.id.playlist_image), isDescendantOfA(nthChildOf(withId(R.id.playLists_list), 0))))
+    /* onView(allOf(withId(R.id.playlist_image), isDescendantOfA(nthChildOf(withId(R.id.playLists_list), 0))))
             .check(matches(withDrawable(R.mipmap.playlist)))
             .check(matches(isDisplayed()))*/
     }
