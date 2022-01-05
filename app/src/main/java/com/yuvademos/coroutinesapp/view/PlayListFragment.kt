@@ -10,13 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yuvademos.coroutinesapp.R
+import com.yuvademos.coroutinesapp.repository.PlayListRepository
 import com.yuvademos.coroutinesapp.viewmodel.PlayListViewModel
 import com.yuvademos.coroutinesapp.viewmodel.PlayListViewmodelFactory
 
 class PlayListFragment : Fragment() {
 
-    lateinit var viewModel: PlayListViewModel
+    private lateinit var viewModel: PlayListViewModel
     lateinit var viewModelFactory: PlayListViewmodelFactory
+    private val repository = PlayListRepository()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,7 +46,7 @@ class PlayListFragment : Fragment() {
     }
 
     private fun setUpViewModel() {
-        viewModelFactory = PlayListViewmodelFactory()
+        viewModelFactory = PlayListViewmodelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(PlayListViewModel::class.java)
     }
 
