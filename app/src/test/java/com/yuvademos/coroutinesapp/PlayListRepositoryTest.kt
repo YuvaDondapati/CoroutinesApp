@@ -5,7 +5,7 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.yuvademos.coroutinesapp.model.PlayList
-import com.yuvademos.coroutinesapp.network.PlayListApi
+import com.yuvademos.coroutinesapp.network.PlayListService
 import com.yuvademos.coroutinesapp.repository.PlayListRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
@@ -17,16 +17,16 @@ import utils.BaseTest
 
 class PlayListRepositoryTest : BaseTest() {
 
-    val api: PlayListApi = mock()
+    val service: PlayListService = mock()
     val playLists = mock<List<PlayList>>()
     val error = Throwable("something goes wrong")
 
     @Test
     fun fetchPlayLists() = runTest {
-        val repository = PlayListRepository(api)
+        val repository = PlayListRepository(service)
         repository.getPlayLists()
 
-        verify(api, times(1)).fetchPlayLists()
+        verify(service, times(1)).fetchPlayLists()
     }
 
     @Test
@@ -44,24 +44,24 @@ class PlayListRepositoryTest : BaseTest() {
     private fun mockFailureCase(): PlayListRepository {
         val expectedError = Result.failure<List<PlayList>>(error)
         runBlocking {
-            whenever(api.fetchPlayLists()).thenReturn(
+            whenever(service.fetchPlayLists()).thenReturn(
                 flow {
                     emit(expectedError)
                 }
             )
         }
-        return PlayListRepository(api)
+        return PlayListRepository(service)
     }
 
     private fun mockSuccessCase(): PlayListRepository {
         runBlocking {
-            whenever(api.fetchPlayLists()).thenReturn(
+            whenever(service.fetchPlayLists()).thenReturn(
                 flow {
                     emit(Result.success(playLists))
                 }
             )
         }
-        return PlayListRepository(api)
+        return PlayListRepository(service)
     }
 
 }

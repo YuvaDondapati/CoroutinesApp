@@ -1,13 +1,12 @@
 package com.yuvademos.coroutinesapp.repository
 
 import com.yuvademos.coroutinesapp.model.PlayList
-import com.yuvademos.coroutinesapp.network.PlayListApi
+import com.yuvademos.coroutinesapp.network.PlayListService
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
-class PlayListRepository(private val api: PlayListApi) {
+class PlayListRepository(private val service: PlayListService) {
 
     suspend fun getPlayLists(): Flow<Result<List<PlayList>>> {
-        return api.fetchPlayLists()
+        return service.fetchPlayLists()
     }
 }
