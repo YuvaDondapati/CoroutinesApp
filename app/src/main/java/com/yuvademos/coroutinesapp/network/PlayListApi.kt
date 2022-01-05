@@ -2,9 +2,10 @@ package com.yuvademos.coroutinesapp.network
 
 import com.yuvademos.coroutinesapp.model.PlayList
 import kotlinx.coroutines.flow.Flow
-import retrofit2.http.GET
 
-interface PlayListApi {
-    @GET("/playlists")
-    fun fetchPlayLists() : Flow<List<PlayList>>
+class PlayListApi {
+    //    @GET("/playlists")
+    suspend fun fetchPlayLists(): Flow<Result<List<PlayList>>> {
+        TODO("not yet implemented")
+    }
 }

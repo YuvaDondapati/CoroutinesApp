@@ -10,15 +10,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yuvademos.coroutinesapp.R
+import com.yuvademos.coroutinesapp.network.PlayListApi
 import com.yuvademos.coroutinesapp.repository.PlayListRepository
 import com.yuvademos.coroutinesapp.viewmodel.PlayListViewModel
 import com.yuvademos.coroutinesapp.viewmodel.PlayListViewmodelFactory
+import retrofit2.Retrofit
 
 class PlayListFragment : Fragment() {
 
     private lateinit var viewModel: PlayListViewModel
     lateinit var viewModelFactory: PlayListViewmodelFactory
-    private val repository = PlayListRepository()
+    private val apiService = PlayListApi()
+    private val repository = PlayListRepository(apiService)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
