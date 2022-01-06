@@ -10,6 +10,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.yuvademos.coroutinesapp.view.MainActivity
 import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.junit.Rule
@@ -48,6 +49,16 @@ class PlayListFeature {
     /* onView(allOf(withId(R.id.playlist_image), isDescendantOfA(nthChildOf(withId(R.id.playLists_list), 0))))
             .check(matches(withDrawable(R.mipmap.playlist)))
             .check(matches(isDisplayed()))*/
+    }
+
+    @Test
+    fun displayLoaderWhileFetchingPlayList(){
+        onView(withId(R.id.progressBar)).check(matches(isDisplayed()))
+    }
+    @Test
+    fun hideLoaderWhileFetchingPlayList(){
+        Thread.sleep(4000)
+        onView(withId(R.id.progressBar)).check(matches(not(isDisplayed())))
     }
     fun nthChildOf(parentMatcher: Matcher<View>, childPosition: Int): Matcher<View> {
         return object : TypeSafeMatcher<View>() {

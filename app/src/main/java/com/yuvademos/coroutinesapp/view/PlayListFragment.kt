@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yuvademos.coroutinesapp.R
+import com.yuvademos.coroutinesapp.databinding.FragmentPlaylistBinding
 import com.yuvademos.coroutinesapp.viewmodel.PlayListViewModel
 import com.yuvademos.coroutinesapp.viewmodel.PlayListViewModelFactory
 import org.koin.android.ext.android.inject
@@ -19,22 +19,33 @@ class PlayListFragment : Fragment() {
     private lateinit var viewModel: PlayListViewModel
 
     val viewModelFactory: PlayListViewModelFactory by inject()
+    private var _binding: FragmentPlaylistBinding? = null
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_playlist, container, false)
+        _binding = FragmentPlaylistBinding.inflate(inflater, container, false)
+        val view = binding?.root
         setUpViewModel()
-        observeViewModel(view)
+        observeViewModel()
         return view
     }
 
-    private fun observeViewModel(view: View?) {
-        viewModel.playLists.observe(viewLifecycleOwner, Observer { playlists ->
+    private fun observeViewModel() {
+        viewModel.loader.observe(viewLifecycleOwner, { loading ->
+            when {
+                loading -> binding?.progressBar?.visibility = View.VISIBLE
+                else -> {
+                    binding?.progressBar?.visibility = View.GONE
+                }
+            }
+        })
+        viewModel.playLists.observe(viewLifecycleOwner, { playlists ->
             when {
                 playlists.isSuccess -> {
-                    with(view as RecyclerView) {
+                    binding?.playListsList?.apply {
                         layoutManager = LinearLayoutManager(context)
                         adapter = playlists.getOrNull()?.let { MyPlayListRecyclerViewAdapter(it) }
                     }
@@ -50,9 +61,15 @@ class PlayListFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(PlayListViewModel::class.java)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
         @JvmStatic
         fun newInstance() =
             PlayListFragment().apply {}
     }
+
 }
